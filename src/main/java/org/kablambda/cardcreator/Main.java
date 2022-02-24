@@ -15,10 +15,12 @@ import com.itextpdf.layout.properties.VerticalAlignment;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVRecord;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import java.util.stream.StreamSupport;
 
 import static java.util.stream.Collectors.toList;
 import static java.util.stream.IntStream.range;
@@ -31,19 +33,23 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
 
-        try (FileReader reader = new FileReader("/tmp/Questions and Answers - Sheet1.csv");
-             TableBuilder tableBuilder = new TableBuilder(new Document(new PdfDocument(new PdfWriter("/tmp/foo.pdf"))), ROWS, COLUMNS)) {
+        try (FileReader reader = new FileReader("/tmp/Questions and Answers - Sheet1.csv")) {
             Iterable<CSVRecord> records = CSVFormat.DEFAULT
                     .parse(reader);
-            for (CSVRecord q : records) {
-                if (q.size() != 6) {
-                    throw new RuntimeException("Invalid line: " + q.toString());
-                }
-                int correctIndex = Integer.parseInt(q.get(5));
-                tableBuilder.addCell(createQCell(q.get(0)));
+            createCards(StreamSupport.stream(records.spliterator(), false)
+                    .map(r -> new Card(r.get(0),range(1, 5).mapToObj(r::get).collect(toList()),Integer.parseInt(r.get(5))))
+                    .collect(toList()));
+        }
+    }
+
+    public static void createCards(List<Card> cards) throws Exception {
+        try(TableBuilder tableBuilder = new TableBuilder(new Document(new PdfDocument(
+                new PdfWriter("/tmp/foo.pdf"))), ROWS, COLUMNS)) {
+            for (Card c : cards) {
+                tableBuilder.addCell(createQCell(c.question()));
                 tableBuilder.addCell(createACell(
-                        range(1, 5).mapToObj(q::get).collect(toList()),
-                        correctIndex
+                        c.answers(),
+                        c.correctIndex()
                 ));
             }
         }
