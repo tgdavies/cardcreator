@@ -3,7 +3,6 @@ package org.kablambda.cardcreator;
 import com.itextpdf.kernel.colors.Color;
 import com.itextpdf.kernel.pdf.PdfDocument;
 import com.itextpdf.kernel.pdf.PdfWriter;
-import com.itextpdf.kernel.pdf.colorspace.PdfColorSpace;
 import com.itextpdf.kernel.pdf.colorspace.PdfDeviceCs;
 import com.itextpdf.layout.Document;
 import com.itextpdf.layout.borders.DottedBorder;
@@ -21,12 +20,14 @@ import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
+import static java.util.stream.Collectors.toList;
+import static java.util.stream.IntStream.range;
+
 public class Main {
     private static final int COLUMNS = 3;
     private static final int ROWS = 3;
     private static final int CARD_WIDTH_MM = 63;
-    private static final int CARD_HEIGHT_MM = 88;
-    private static final int CELL_COUNT = ROWS * COLUMNS;
+    private static final double CARD_HEIGHT_MM = 87.5;
 
     public static void main(String[] args) throws Exception {
 
@@ -41,7 +42,7 @@ public class Main {
                 int correctIndex = Integer.parseInt(q.get(5));
                 tableBuilder.addCell(createQCell(q.get(0)));
                 tableBuilder.addCell(createACell(
-                        IntStream.range(1, 5).mapToObj(i -> q.get(i)).collect(Collectors.toList()),
+                        range(1, 5).mapToObj(q::get).collect(toList()),
                         correctIndex
                 ));
             }
@@ -63,7 +64,7 @@ public class Main {
         Cell cell = new Cell();
         cell.setHeight(mmToPoints(CARD_HEIGHT_MM));
         cell.setWidth(mmToPoints(CARD_WIDTH_MM));
-        cell.setBorder(new DottedBorder(Color.makeColor(new PdfDeviceCs.Gray(), new float[] {0.5f}), 0.5f));
+        cell.setBorder(new DottedBorder(Color.makeColor(new PdfDeviceCs.Gray(), new float[]{0.5f}), 0.5f));
         cell.setHeight(mmToPoints(CARD_HEIGHT_MM));
         cell.setVerticalAlignment(VerticalAlignment.MIDDLE);
         return cell;
@@ -88,7 +89,7 @@ public class Main {
         return c;
     }
 
-    private static float mmToPoints(float mm) {
-        return mm * 2.83465f;
+    private static float mmToPoints(double mm) {
+        return (float) (mm * 2.83465);
     }
 }
