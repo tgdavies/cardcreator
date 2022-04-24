@@ -6,7 +6,7 @@
 
     <groupId>org.kablambda</groupId>
     <artifactId>cardcreator</artifactId>
-    <version>2.0-SNAPSHOT</version>
+    <version>1.0-SNAPSHOT</version>
 
     <properties>
         <maven.compiler.source>17</maven.compiler.source>
@@ -14,7 +14,7 @@
     </properties>
 
     <scm>
-        <connection>scm:git:ssh://github.com/tgdavies/cardcreator.git</connection>
+        <connection>scm:git:https://github.com/tgdavies/cardcreator.git</connection>
     </scm>
 
     <dependencies>
