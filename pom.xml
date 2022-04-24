@@ -14,7 +14,7 @@
     </properties>
 
     <scm>
-        <connection>scm:git:https://github.com/tgdavies/cardcreator.git</connection>
+        <connection>scm:git:ssh://github.com/tgdavies/cardcreator.git</connection>
     </scm>
 
     <dependencies>
