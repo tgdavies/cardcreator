@@ -13,6 +13,10 @@
         <maven.compiler.target>17</maven.compiler.target>
     </properties>
 
+    <scm>
+        <connection>scm:git:https://github.com/tgdavies/cardcreator.git</connection>
+    </scm>
+
     <dependencies>
         <!-- https://mvnrepository.com/artifact/com.itextpdf/itextpdf -->
         <!-- https://mvnrepository.com/artifact/com.itextpdf/itext7-core -->
