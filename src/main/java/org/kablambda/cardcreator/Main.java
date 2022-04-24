@@ -93,7 +93,10 @@ public class Main {
                 .setTextAlignment(TextAlignment.CENTER)
                 .setFontSize(24.0f)
         );
-        c.add(new Paragraph(card.answers().get(card.correctIndex() - 1)).setTextAlignment(TextAlignment.CENTER));
+        c.add(new Paragraph(card.answers().get(card.correctIndex() - 1))
+                .setTextAlignment(TextAlignment.CENTER)
+                .setItalic()
+        );
         return c;
     }
 
